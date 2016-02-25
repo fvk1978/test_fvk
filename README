@@ -1,0 +1,27 @@
+=====
+Tasks
+=====
+
+Tasks is a simple Django app to manipulate tasks. 
+Detailed documentation is in the "docs" directory.
+
+Quick start
+-----------
+
+1. Add "tasks" to your INSTALLED_APPS setting like this::
+
+    INSTALLED_APPS = [
+        ...
+        'tasks',
+    ]
+
+2. Include the tasks URLconf in your project urls.py like this::
+
+    url(r'^tasks/', include('tasks.urls')),
+
+3. Run `python manage.py migrate` to create the polls models.
+
+4. Start the development server and visit http://127.0.0.1:8000/admin/
+   to create a poll (you'll need the Admin app enabled).
+
+5. Visit http://127.0.0.1:8000/tasks/ to participate in the poll.
