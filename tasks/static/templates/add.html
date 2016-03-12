@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <h1>Add</h1>
+
+    <div class="well">
+      <form role="form" ng-submit="vm.create()">
+        <div class="form-group">
+          <label for="add__title">Title</label>
+          <input type="text" class="form-control" id="add__title" ng-model="vm.title" placeholder="title" />
+        </div>
+
+        <div class="form-group">
+          <label for="add__summary">Summary</label>
+          <input type="text" class="form-control" id="add__summary" ng-model="vm.summary" placeholder="summary" />
+        </div>
+
+        <div class="form-group">
+          <label for="add__end_date">Date</label>
+          <input type="date" class="form-control" id="add__end_date" ng-model="vm.end_date" placeholder="" />
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

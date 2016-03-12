@@ -1,0 +1,36 @@
+.column-left{ float: left; width: 10%; }
+.column-right{ float: right; width: 10%; }
+.column-center{ display: inline-block; width: 80%; }
+
+/*.btn-add-new-task {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}*/
+
+.no-tasks-here {
+  text-align: center;
+}
+
+.task {}
+
+.task .task__meta {
+  font-weight: bold;
+  text-align: left;
+  padding-bottom: 19px;
+}
+
+.task .task__meta a:hover {
+  text-decoration: none;
+}
+
+.account {}
+
+.account .account__header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.account .account__username {
+  font-weight: bold;
+}

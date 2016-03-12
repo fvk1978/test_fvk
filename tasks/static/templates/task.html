@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="well">
+      <div class="task">
+        <div class="task__meta">
+            {{ task.title }} 
+        </div>
+
+        <div class="task__content">
+          {{ task.end_date|date }} 
+        </div>
+        <div class="task__content">
+          {{ task.summary }}
+        </div>
+        <div class="form-group">{{task.id}}
+            <a 
+            href="javascript:void(0)"
+            ng-dialog="/static/templates/edit_task.html"
+            ng-dialog-init="init(task)"
+            ng-dialog-controller="EditTaskController as vm">edit</a> 
+            <a 
+            href="javascript:void(0)"
+            ng-click="vm.destroy(task)">delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

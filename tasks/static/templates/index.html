@@ -1,0 +1,8 @@
+<tasks tasks="vm.tasks" ng-show="vm.tasks && vm.tasks.length"></tasks>
+
+<a class="btn btn-primary btn-fab btn-raised mdi-content-add btn-add-new-task"
+   href="javascript:void(0)"
+   ng-show="vm.isAuthenticated || 1"
+   ng-dialog="/static/templates/create.html"
+   ng-dialog-controller="AddTaskController as vm"></a>
+

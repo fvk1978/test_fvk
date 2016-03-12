@@ -11,5 +11,7 @@ class Task(models.Model):
     summary = models.TextField()
     end_date = models.DateTimeField('deadline date')
     
+    REQUIRED_FIELDS = ['title', 'summary', 'end_date']
+    
     def is_active(self):
         return self.end_date >= timezone.now()

@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 
-<h1>Project template</h2>
+{% block content %}
+<h1>Project template</h1>
+
+
 
 The Project is a Powerful Multi-Concept Bootstrap Template. It has endless posibilities and It is perfectly suitable for Business, Portfolio, Personal, Agency, Corporate, Clinic/Hospital, Restaurant, Wedding, Landing, Shop, Blog.
 
-<h1>About author</h2>
+<h1>About author</h1>
 Fedor Kobzarenko, fedorvk@gmail.com
+
+sign-in-facebook.png
+<!-- <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a> -->
+
+{% include 'javascripts.html' %}
+<div class="col-xs-12 ng-view"></div>
+
+{% endblock content %}
