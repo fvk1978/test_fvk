@@ -4,12 +4,32 @@ from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 from rest_framework import permissions, viewsets, status, views
 from rest_framework.response import Response
+from rest_framework.decorators import detail_route, list_route
 import json
 
-from .serializers import TaskSerializer
-from .models import Task
+from .serializers import TaskSerializer, AccountSerializer
+from .models import Task, Account
 
 
+class AccountViewSet(viewsets.ModelViewSet):
+    #lookup_field = 'title'
+    queryset = Account.objects.all().order_by('-id')
+    serializer_class = AccountSerializer
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            Account.objects.create(**serializer.validated_data)
+
+            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+
+        return Response({
+            'status': 'Bad request',
+            'message': 'Account could not be created with received data.'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 class TaskViewSet(viewsets.ModelViewSet):
     #lookup_field = 'title'
     queryset = Task.objects.all().order_by('-id')
@@ -28,6 +48,20 @@ class TaskViewSet(viewsets.ModelViewSet):
             'message': 'Account could not be created with received data.'
         }, status=status.HTTP_400_BAD_REQUEST)
     
+    @detail_route(methods=['post'])
+    def remove_user(self, request, pk=None):
+        serializer = AccountSerializer(data=request.data)
+        task = Task.objects.get(pk=pk)
+        if serializer.is_valid():
+            user = Account.objects.get(username=serializer.data['username'])
+            task.team.remove(user)
+            task.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print serializer.errors
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+
     
 class CreateTaskView(views.APIView):
     def post(self, request, format=None):
@@ -57,6 +91,34 @@ class CreateTaskView(views.APIView):
             }, status=status.HTTP_401_UNAUTHORIZED)
         
 
+class TaskAccountsViewSet(viewsets.ViewSet):
+    queryset = Account.objects.select_related('task').order_by('-id')
+    serializer_class = AccountSerializer
+
+    def list(self, request, task_pk=None):
+        queryset = self.queryset.filter(task=task_pk)
+        serializer = self.serializer_class(queryset, many=True)
+
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None, task_pk=None):
+        queryset = self.queryset.get(pk=pk, task=task_pk)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, task_pk=None, format=None):
+        serializer = self.serializer_class(data=request.data)
+        task = Task.objects.get(pk=task_pk)
+        if serializer.is_valid():
+            user = Account.objects.get(username=serializer.data['username'])
+            task.team.add(user)
+            task.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+
+
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -65,7 +127,7 @@ class IndexView(TemplateView):
         return super(IndexView, self).dispatch(*args, **kwargs)
     
     
-def index(request):
-    latest_task_list = Task.objects.order_by('-end_date')[:5]
-    context = {'latest_task_list': latest_task_list}
-    return render(request, 'index.html', context)
+#def index(request):
+    #latest_task_list = Task.objects.order_by('-end_date')[:5]
+    #context = {'latest_task_list': latest_task_list}
+    #return render(request, 'index.html', context)

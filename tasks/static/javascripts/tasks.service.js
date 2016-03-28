@@ -21,7 +21,9 @@
       create: create,
       get: get,
       update: update,
-      destroy: destroy
+      destroy: destroy,
+      add_user: add_user,
+      remove_user: remove_user
     };
     
 
@@ -63,7 +65,7 @@
      * @memberOf test_fvk.tasks.services.Tasks
      */
     function get(id) {
-      return $http.get('/tasks/api/v1/tasks/' + id);
+      return $http.get('/tasks/api/v1/tasks/' + id + '/');
     }
     
     /**
@@ -73,12 +75,34 @@
      * @returns {Promise}
      * @memberOf test_fvk.tasks.services.Tasks
      */
-    function update(id, title, summary, end_date) {
-      return $http.put('/tasks/api/v1/tasks/' + id + '/', {
-        title: title,
-        summary: summary,
-        end_date: end_date,
+    function update(task) {
+      return $http.put('/tasks/api/v1/tasks/' + task.id + '/', {
+        title: task.title,
+        summary: task.summary,
+        end_date: task.end_date,
       });
+    }
+    
+    /**
+     * @name add_user
+     * @desc Update Tasks 
+     * @param {string} id 
+     * @returns {Promise}
+     * @memberOf test_fvk.tasks.services.Tasks
+     */
+    function add_user(task, user) {
+      return $http.post('/tasks/api/v1/tasks/' + task.id + '/team/', user);
+    }
+    
+    /**
+     * @name remove_user
+     * @desc Remove User from Task
+     * @param {string} id 
+     * @returns {Promise}
+     * @memberOf test_fvk.tasks.services.Tasks
+     */
+    function remove_user(task, user) {
+      return $http.post('/tasks/api/v1/tasks/' + task.id + '/remove_user/', user);
     }
     
     /**

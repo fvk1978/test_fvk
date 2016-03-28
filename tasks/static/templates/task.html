@@ -1,7 +1,11 @@
 <div class="row">
-  <div class="col-sm-12">
+  <div class="container-fluid" ng-controller="TasksController">
     <div class="well">
-      <div class="task">
+      <div class="task"
+        data-drop="true" data-drag="false" 
+        jqyoui-droppable="{placeholder:true,animate:true, multiple:true,stack:true, onDrop: 'dropCallback(task)', onOver: 'overCallback(task)'}"
+        ng-model="task"
+        >
         <div class="task__meta">
             {{ task.title }} 
         </div>
@@ -15,12 +19,13 @@
         <div class="form-group">{{task.id}}
             <a 
             href="javascript:void(0)"
-            ng-dialog="/static/templates/edit_task.html"
-            ng-dialog-init="init(task)"
-            ng-dialog-controller="EditTaskController as vm">edit</a> 
+            ng-click="vm.update(task)">edit</a>
             <a 
             href="javascript:void(0)"
             ng-click="vm.destroy(task)">delete</a>
+        </div>
+        <div class="form-group">
+            <users users="task.team" task="task" ng-show="task.team && task.team.length"></users>
         </div>
       </div>
     </div>

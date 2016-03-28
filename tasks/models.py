@@ -2,8 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-
-# Create your models here.
+from django.contrib.auth.models import User
 
 
 class Task(models.Model):
@@ -13,5 +12,16 @@ class Task(models.Model):
     
     REQUIRED_FIELDS = ['title', 'summary', 'end_date']
     
+    def get_team(self):
+        return self.team.all()
+
     def is_active(self):
         return self.end_date >= timezone.now()
+
+class Account(models.Model):
+    username = models.CharField(max_length=200)
+    task = models.ManyToManyField(Task, related_name='team', null=True, blank=True)
+ 
+    def __unicode__(self):
+        return self.username
+

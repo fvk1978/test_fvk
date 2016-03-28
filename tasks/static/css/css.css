@@ -2,6 +2,20 @@
 .column-right{ float: right; width: 10%; }
 .column-center{ display: inline-block; width: 80%; }
 
+#images_hz {
+width: 960px;
+height: auto;
+overflow: hidden;
+}
+#images_hz img {
+display: inline;
+margin: 0 10px;
+}
+
+.div_row {
+  display: inline-block;
+}
+
 /*.btn-add-new-task {
   position: fixed;
   bottom: 20px;

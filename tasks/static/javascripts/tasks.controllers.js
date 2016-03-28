@@ -9,23 +9,33 @@
     .module('test_fvk.tasks.controllers')
     .controller('TasksController', TasksController);
 
-  TasksController.$inject = ['$location', '$rootScope', '$scope', 'Snackbar', 'Tasks'];
+  TasksController.$inject = ['$location', '$rootScope', '$scope', 'Snackbar', 'Tasks', 'ngDialog'];
 
   /**
   * @namespace TasksController
   */
-  function TasksController($location, $rootScope, $scope, Snackbar, Tasks) {
+  function TasksController($location, $rootScope, $scope, Snackbar, Tasks, ngDialog) {
     var vm = this;
 
     vm.destroy = destroy;
     vm.update = update;
+    vm.remove_user = remove_user;
     
     vm.columns = [];
 
     activate();
+
     
-
-
+      $scope.startCallback = function(event, ui, user, index) {
+          $rootScope.dragged_user = user;
+        };
+        $scope.dropCallback = function(event, ui, item) {
+          add_user($rootScope.target_task, $rootScope.dragged_user);
+        };
+        $scope.overCallback = function(event, ui, task) {
+            $rootScope.target_task = task;
+        };
+        
     /**
     * @name activate
     * @desc Actions to be performed when this controller is instantiated
@@ -66,7 +76,7 @@
     */
     function approximateShortestColumn() {
       var scores = vm.columns.map(columnMapFn);
-
+      
       return scores.indexOf(Math.min.apply(this, scores));
 
 
@@ -77,9 +87,9 @@
       */
       function columnMapFn(column) {
         var lengths = column.map(function (element) {
-          return element.summary.length * 3;
+          return element.summary.length;
         });
-
+        
         return lengths.reduce(sum, 0) * column.length;
       }
 
@@ -105,7 +115,7 @@
     * @memberOf test_fvk.tasks.controllers.TasksController
     */
     function render(current, original) {
-      if (current !== original) {
+      if (current.length && current !== original) {
         vm.columns = [];
 
         for (var i = 0; i < calculateNumberOfColumns(); ++i) {
@@ -128,9 +138,6 @@
     function destroy(task) {
       $rootScope.$broadcast('task.deleted', {
         task: task,
-//         author: {
-//           username: Authentication.getAuthenticatedAccount().username
-//         }
       });        
       Tasks.destroy(task).then(taskSuccessFn, taskErrorFn);
 
@@ -158,29 +165,111 @@
      * @desc Update this task
      * @memberOf test_fvk.controllers.TaskController
      */
-    function update() {
-      var username = $routeParams.username.substr(1);
+    function update(task) {
 
-      Task.update(username, vm.account).then(taskSuccessFn, taskErrorFn);
+        $scope.task = task;
+        ngDialog.openConfirm({            
+            templateUrl: '/static/templates/edit_task.html',
+            scope: $scope           
+        }).then(function(value){
+            save(value);
+        },function(reject){
+            Snackbar.error(reject);
+         });           
+  
+    }
+    
+        /**
+     * @name save
+     * @desc Save edited task
+     * @memberOf test_fvk.controllers.TaskController
+     */
+    function save(task) {
+      $rootScope.$broadcast('task.saved', {
+        task: task,
+      });        
+      Tasks.update(task).then(taskSuccessFn, taskErrorFn);
 
       /**
        * @name taskSuccessFn
-       * @desc Show success snackbar
+       * @desc Redirect to index and display success snackbar
        */
       function taskSuccessFn(data, status, headers, config) {
-        Snackbar.show('Your task has been updated.');
+        Snackbar.show('Your task has been saved.');
       }
 
 
       /**
        * @name taskErrorFn
-       * @desc Show error snackbar
+       * @desc Display error snackbar
        */
       function taskErrorFn(data, status, headers, config) {
         Snackbar.error(data.error);
       }
     }
-  
-  
+
+        /**
+     * @name add_user
+     * @desc Add user to task
+     * @memberOf test_fvk.controllers.TaskController
+     */
+    function add_user(task, user) {
+      Tasks.add_user(task, user).then(taskSuccessFn, taskErrorFn);
+
+      /**
+       * @name taskSuccessFn
+       * @desc Redirect to index and display success snackbar
+       */
+      function taskSuccessFn(data, status, headers, config) {
+        Snackbar.show('User has been saved.');
+        $rootScope.$broadcast('user.added', {
+            task: task,
+            user: user,
+        });        
+      }
+
+
+      /**
+       * @name taskErrorFn
+       * @desc Display error snackbar
+       */
+      function taskErrorFn(data, status, headers, config) {
+        Snackbar.error(data.error);
+      }
+    }
+
+        /**
+     * @name remove_user
+     * @desc Remove user from task
+     * @memberOf test_fvk.controllers.TaskController
+     */
+    function remove_user(task, user) {
+      Tasks.remove_user(task, user).then(taskSuccessFn, taskErrorFn);
+
+      /**
+       * @name taskSuccessFn
+       * @desc Redirect to index and display success snackbar
+       */
+      function taskSuccessFn(data, status, headers, config) {
+        Snackbar.show('User has been removed.');
+        $rootScope.$broadcast('user.removed', {
+            task: task,
+            user: user,
+        });        
+      }
+
+
+      /**
+       * @name taskErrorFn
+       * @desc Display error snackbar
+       */
+      function taskErrorFn(data, status, headers, config) {
+        Snackbar.error(data.error);
+      }
+    }
+
+    
+    
+    
   }
 })();

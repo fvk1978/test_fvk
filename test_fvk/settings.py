@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'tasks', 
     'rest_framework',
+    'rest_framework_swagger',
     'social.apps.django_app.default',
     'django.contrib.admin',
     'django.contrib.auth',
