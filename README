@@ -8,6 +8,9 @@ Detailed documentation is in the "docs" directory.
 Quick start
 -----------
 sudo bower install --force-latest
+mv bower_components ./tasks/static/
+sudo pip install
+
 
 1. Add "tasks" to your INSTALLED_APPS setting like this::
 

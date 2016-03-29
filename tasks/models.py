@@ -6,9 +6,15 @@ from django.contrib.auth.models import User
 
 
 class Task(models.Model):
+    STATUS = (('open', 'open'),
+                      ('done', 'done'))
     title = models.CharField(max_length=200)
     summary = models.TextField()
-    end_date = models.DateTimeField('deadline date')
+    status = models.CharField(max_length=10,
+                                              choices=STATUS,
+                                              default='open')
+    index = models.IntegerField(default=0)
+    end_date = models.DateTimeField(help_text='Deadline date', blank=True, null=True)
     
     REQUIRED_FIELDS = ['title', 'summary', 'end_date']
     
@@ -17,6 +23,7 @@ class Task(models.Model):
 
     def is_active(self):
         return self.end_date >= timezone.now()
+
 
 class Account(models.Model):
     username = models.CharField(max_length=200)

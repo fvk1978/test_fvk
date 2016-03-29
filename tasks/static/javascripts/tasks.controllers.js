@@ -19,6 +19,21 @@
 
     vm.destroy = destroy;
     vm.update = update;
+    $scope.partial_update = partial_update;
+    $scope.statuses = [
+                                    {value: 'open', text: 'open'},
+                                    {value: 'done', text: 'done'},
+                                ]; 
+    
+    $scope.opened = {};
+
+    $scope.open = function($event, elementOpened) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened[elementOpened] = !$scope.opened[elementOpened];
+    };
+
     vm.remove_user = remove_user;
     
     vm.columns = [];
@@ -115,7 +130,7 @@
     * @memberOf test_fvk.tasks.controllers.TasksController
     */
     function render(current, original) {
-      if (current.length && current !== original) {
+      if (current && current.length && current !== original) {
         vm.columns = [];
 
         for (var i = 0; i < calculateNumberOfColumns(); ++i) {
@@ -179,6 +194,35 @@
   
     }
     
+        /**
+     * @name partial_update
+     * @desc Update some task's field task
+     * @memberOf test_fvk.controllers.TaskController
+     */
+    function partial_update(task, attr, data) {
+      $rootScope.$broadcast('task.updated', {
+        task: task,
+      });        
+      Tasks.partial_update(task, attr, data).then(taskSuccessFn, taskErrorFn);
+
+      /**
+       * @name taskSuccessFn
+       * @desc Redirect to index and display success snackbar
+       */
+      function taskSuccessFn(data, status, headers, config) {
+        Snackbar.show('Your task has been updated.');
+      }
+
+
+      /**
+       * @name taskErrorFn
+       * @desc Display error snackbar
+       */
+      function taskErrorFn(data, status, headers, config) {
+        Snackbar.error(data.error);
+      }
+    }
+
         /**
      * @name save
      * @desc Save edited task

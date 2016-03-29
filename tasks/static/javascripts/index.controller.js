@@ -9,12 +9,12 @@
     .module('test_fvk.tasks.controllers')
     .controller('IndexController', IndexController);
 
-  IndexController.$inject = ['$scope', 'Tasks', 'Users', 'Snackbar'];
+  IndexController.$inject = ['$scope', '$timeout', 'Tasks', 'Users', 'Snackbar'];
 
   /**
   * @namespace IndexController
   */
-  function IndexController($scope, Tasks, Users, Snackbar) {
+  function IndexController($scope, $timeout, Tasks, Users, Snackbar, Pusher) {
     var vm = this;
 
     vm.tasks = [];
@@ -50,7 +50,9 @@
       });
 
       $scope.$on('user.added', function (event, data) {
-          data.task.team.unshift(data.user);
+          if (arrayObjectIndexOf(data.task.team, data.user) == -1) {
+            data.task.team.unshift(data.user);
+          }
 //           Tasks.all().then(tasksSuccessFn, tasksErrorFn);
           // FixMe: have to remove that refresh
          Users.all().then(usersSuccessFn, userssErrorFn);
@@ -59,8 +61,6 @@
       $scope.$on('user.removed', function (event, data) {
         var index = arrayObjectIndexOf(data.task.team, data.user);
         data.task.team.splice(index, 1);
-//         Tasks.all().then(tasksSuccessFn, tasksErrorFn);
-//         Users.all().then(usersSuccessFn, userssErrorFn);
       });
 
       $scope.$on('task.deleted', function (event, task) {
@@ -75,6 +75,7 @@
       */
       function tasksSuccessFn(data, status, headers, config) {
         vm.tasks = data.data;
+//         $timeout(activate, 1000);
       }
 
 

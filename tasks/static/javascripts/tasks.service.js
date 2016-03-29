@@ -21,6 +21,7 @@
       create: create,
       get: get,
       update: update,
+      partial_update: partial_update,
       destroy: destroy,
       add_user: add_user,
       remove_user: remove_user
@@ -50,6 +51,7 @@
     * @memberOf test_fvk.tasks.services.Tasks
     */
     function create(title, summary, end_date) {
+        console.log(title, summary, end_date);
       return $http.post('/tasks/api/v1/tasks/', {
         title: title,
         summary: summary,
@@ -79,8 +81,23 @@
       return $http.put('/tasks/api/v1/tasks/' + task.id + '/', {
         title: task.title,
         summary: task.summary,
+        status: task.status,
+        index: task.index,
         end_date: task.end_date,
       });
+    }
+    
+    /**
+     * @name partial_update
+     * @desc Update some fields in the Tasks 
+     * @param {string} id The id to update Task
+     * @returns {Promise}
+     * @memberOf test_fvk.tasks.services.Tasks
+     */
+    function partial_update(task, attr, data) {
+        var out = {};
+        out[attr] = data;
+      return $http.patch('/tasks/api/v1/tasks/' + task.id + '/', out);
     }
     
     /**

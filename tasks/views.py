@@ -32,7 +32,7 @@ class AccountViewSet(viewsets.ModelViewSet):
     
 class TaskViewSet(viewsets.ModelViewSet):
     #lookup_field = 'title'
-    queryset = Task.objects.all().order_by('-id')
+    queryset = Task.objects.all().order_by('index')
     serializer_class = TaskSerializer
 
     def create(self, request):
@@ -50,14 +50,19 @@ class TaskViewSet(viewsets.ModelViewSet):
     
     @detail_route(methods=['post'])
     def remove_user(self, request, pk=None):
+        """
+        Remove user from task's team
+        """
         serializer = AccountSerializer(data=request.data)
         task = Task.objects.get(pk=pk)
         if serializer.is_valid():
             user = Account.objects.get(username=serializer.data['username'])
-            task.team.remove(user)
-            task.save()
+            if user in task.team.all():
+                task.team.remove(user)
+                task.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             print serializer.errors
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
@@ -96,25 +101,36 @@ class TaskAccountsViewSet(viewsets.ViewSet):
     serializer_class = AccountSerializer
 
     def list(self, request, task_pk=None):
+        """
+        Get task's list
+        """
         queryset = self.queryset.filter(task=task_pk)
         serializer = self.serializer_class(queryset, many=True)
 
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None, task_pk=None):
+        """
+        Get taks's details
+        """
         queryset = self.queryset.get(pk=pk, task=task_pk)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request, task_pk=None, format=None):
+        """
+        Add user to the task's team
+        """
         serializer = self.serializer_class(data=request.data)
         task = Task.objects.get(pk=task_pk)
         if serializer.is_valid():
             user = Account.objects.get(username=serializer.data['username'])
-            task.team.add(user)
-            task.save()
+            if user not in task.team.all():
+                task.team.add(user)
+                task.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
 

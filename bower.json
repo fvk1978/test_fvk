@@ -15,15 +15,16 @@
     "angular-route": "latest",
     "angular-cookies": "latest",
     "angular-dragdrop": "latest",
-    "jquery-ui": "latest",
-    "bootstrap": "latest",
-    "bootstrap-material-design": "latest",
-    "jquery": "latest",
-    "ngDialog": "latest"
-  }
-  "devDependencies": {
+    "angular-xeditable": "latest",
+    "angular-pusher": "latest",
+    "angular-animate": "latest",
     "angular-mocks": "latest",
     "angular-ui-bootstrap-bower": "latest",
-    "angular-animate": "latest"
+    "jquery-ui": "latest",
+    "bootstrap": "~3.3.0",
+    "bootstrap-material-design": "~0.1.5",
+    "jquery": "latest",
+    "underscore": "latest",
+    "ngDialog": "latest"
   }  
 }

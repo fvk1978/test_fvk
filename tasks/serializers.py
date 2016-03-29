@@ -6,7 +6,7 @@ class AccountSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Account
-        fields = ('id', 'username', 'task')
+        fields = ('id', 'username')
 
         def update(self, instance, validated_data):
             
@@ -21,7 +21,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('id', 'title', 'summary', 'end_date', 'team')
+        fields = ('id', 'title', 'summary', 'status', 'index', 'end_date', 'team')
 
         def create(self, validated_data):
             return Task.objects.create(**validated_data)
