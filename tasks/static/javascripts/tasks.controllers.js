@@ -20,6 +20,9 @@
     vm.destroy = destroy;
     vm.update = update;
     $scope.partial_update = partial_update;
+    vm.tasks_dnd = {
+                                    selected: null,
+                                };
     $scope.statuses = [
                                     {value: 'open', text: 'open'},
                                     {value: 'done', text: 'done'},
@@ -49,6 +52,16 @@
         };
         $scope.overCallback = function(event, ui, task) {
             $rootScope.target_task = task;
+        };
+        $scope.task_drop_callback = function(event, index) {
+            // Changed tasks' order, let's change tasks' indexes
+            var index = 0;
+            for (var i = 0; i < vm.columns.length; ++i) {
+                for (var j = 0; j < vm.columns[i].length; ++j) {
+                    index++;
+                    partial_update(vm.columns[i][j], 'index', index);
+                }
+            }
         };
         
     /**

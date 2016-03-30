@@ -1,7 +1,14 @@
 <div class="row" ng-cloak>
   <div ng-repeat="column in vm.columns" >
-    <div class="container-fluid">
-      <div ng-repeat="task in column">
+    <div class="container-fluid" dnd-list="column">
+      <div 
+            ng-repeat="task in column track by $index"
+            dnd-draggable="task"
+            dnd-moved="column.splice($index, 1); task_drop_callback(event, $index)"
+            dnd-effect-allowed="move"
+            dnd-selected="vm.tasks_dnd.selected = task"
+            ng-class="{'selected': vm.tasks_dnd.selected === task}"            
+            >
         <task task="task"></task>
       </div>
     </div>

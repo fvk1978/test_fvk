@@ -21,7 +21,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('id', 'title', 'summary', 'status', 'index', 'end_date', 'team')
+        fields = ('id', 'title', 'summary', 'status', 'index', 'end_date', 'created', 'modified', 'team')
 
         def create(self, validated_data):
             return Task.objects.create(**validated_data)

@@ -21,6 +21,18 @@
 
     activate();
 
+    function arraysEqual(arr1, arr2) {
+        if(arr1.length !== arr2.length)
+            return false;
+        for(var i = arr1.length; i--;) {
+            if(arr1[i].id !== arr2[i].id)
+                return false;
+            if(arr1[i].modified !== arr2[i].modified)
+                return false;
+        }
+        return true;
+    }
+    
     function arrayObjectIndexOf(arr, obj){
         for(var i = 0; i < arr.length; i++){
             if(angular.equals(arr[i], obj)){
@@ -74,8 +86,11 @@
       * @desc Update tasks array on view
       */
       function tasksSuccessFn(data, status, headers, config) {
-        vm.tasks = data.data;
-//         $timeout(activate, 1000);
+        if (!(typeof vm.tasks !== "undefined" && vm.tasks.length > 0 && arraysEqual(vm.tasks, data.data))) {
+            vm.tasks = data.data;
+            console.log("vm.tasks updated", vm.tasks);
+        }
+        $timeout(activate, 1000);
       }
 
 

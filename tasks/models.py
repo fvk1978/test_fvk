@@ -3,7 +3,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 
 class Task(models.Model):
     STATUS = (('open', 'open'),
@@ -15,7 +15,9 @@ class Task(models.Model):
                                               default='open')
     index = models.IntegerField(default=0)
     end_date = models.DateTimeField(help_text='Deadline date', blank=True, null=True)
-    
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
     REQUIRED_FIELDS = ['title', 'summary', 'end_date']
     
     def get_team(self):

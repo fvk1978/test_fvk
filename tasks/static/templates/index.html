@@ -1,5 +1,12 @@
 <div ng-controller="TasksController">
     <users users="vm.users" ng-show="vm.users && vm.users.length"></users>
+    
+    <a class="btn btn-primary btn-fab btn-raised mdi-content-add btn-add-new-task"
+        href="javascript:void(0)"
+        ng-show="vm.tasks && vm.tasks.length"
+        ng-dialog="/static/templates/create.html"
+        ng-dialog-controller="AddTaskController as vm"></a>
+        
     <tasks tasks="vm.tasks" ng-show="vm.tasks && vm.tasks.length"></tasks>
 </div>
 

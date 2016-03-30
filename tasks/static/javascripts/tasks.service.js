@@ -51,7 +51,6 @@
     * @memberOf test_fvk.tasks.services.Tasks
     */
     function create(title, summary, end_date) {
-        console.log(title, summary, end_date);
       return $http.post('/tasks/api/v1/tasks/', {
         title: title,
         summary: summary,

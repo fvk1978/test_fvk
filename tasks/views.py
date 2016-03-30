@@ -43,6 +43,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
 
+        print serializer.errors
         return Response({
             'status': 'Bad request',
             'message': 'Account could not be created with received data.'
