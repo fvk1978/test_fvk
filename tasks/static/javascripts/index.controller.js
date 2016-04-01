@@ -90,7 +90,7 @@
             vm.tasks = data.data;
             console.log("vm.tasks updated", vm.tasks);
         }
-//         $timeout(activate, 1000);
+        $timeout(activate, 1000);
       }
 
 
