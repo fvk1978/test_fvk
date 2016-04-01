@@ -71,6 +71,20 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email', 
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+    'tasks.pipelines.save_profile_picture',
+)
+
 SOCIAL_AUTH_FACEBOOK_KEY = '1055958957829282'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'a39df96165292dd734200a7c34233a16'
 

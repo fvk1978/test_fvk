@@ -4,6 +4,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.db.models.signals import post_save
+
 
 class Task(models.Model):
     STATUS = (('open', 'open'),
@@ -28,9 +30,16 @@ class Task(models.Model):
 
 
 class Account(models.Model):
-    username = models.CharField(max_length=200)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='tasks/static/images/avatars/', null=True, blank=True)
     task = models.ManyToManyField(Task, related_name='team', null=True, blank=True)
  
     def __unicode__(self):
-        return self.username
+        return self.user.username
 
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Account.objects.create(user=instance)
+
+post_save.connect(create_user_profile, sender=User)

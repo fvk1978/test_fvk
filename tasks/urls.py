@@ -1,12 +1,12 @@
 from django.conf.urls import url, include
 from rest_framework_nested import routers
 
-from .views import TaskViewSet, IndexView, AccountViewSet, TaskAccountsViewSet
+from .views import TaskViewSet, IndexView, AccountViewSet, TaskAccountsViewSet, ajax_auth, home, logout, done
 
 from . import views
 
 router = routers.SimpleRouter()
-router.register(r'tasks', TaskViewSet)
+router.register(r'tasks', TaskViewSet, 'Task')
 router.register(r'accounts', AccountViewSet)
 tasks_router = routers.NestedSimpleRouter(
     router, r'tasks', lookup='task'
@@ -22,5 +22,11 @@ urlpatterns = [
     url(r'^api/v1/', include(tasks_router.urls)),
     #url('^api/v1/create$', TaskViewSet.as_view(), name='create'),
     #url(r'^$', views.index, name='index'),
+    url(r'^login/$', 'home'),
+    url(r'^logout/$', 'logout'),
+    url(r'^done/$', 'done', name='done'),
+    url(r'^ajax-auth/(?P<backend>[^/]+)/$', 'ajax_auth',
+        name='ajax-auth'),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
     url(r'^.*$', IndexView.as_view(), name='index'),    
 ]

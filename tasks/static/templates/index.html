@@ -1,6 +1,30 @@
+<script>
+document.getElementById('send-invite').onclick = function() {
+FB.ui({ 
+  method: 'apprequests',
+  message: 'Lets go to the tasks test applicaition' 
+}, function(res){
+  if (!res || !res.request_ids) { /* user canceled */ return; }
+  var req_ids = res.request_ids;
+  var _batch = [];
+  for(var i=0; i<req_ids.length; i++ ){
+    _batch.push({"method":"get","relative_url":req_ids[i]});
+  }
+  if(_batch.length>0){
+    FB.api('/','POST',{batch:_batch},function(res){
+      //res contains uids.
+    });
+  }
+});
+}
+</script>
+
 <div ng-controller="TasksController">
     <users users="vm.users" ng-show="vm.users && vm.users.length"></users>
-    
+    <div>
+        <button class="btn" id="send-invite">Send invite</button>
+    </div>
+
     <a class="btn btn-primary btn-fab btn-raised mdi-content-add btn-add-new-task"
         href="javascript:void(0)"
         ng-show="vm.tasks && vm.tasks.length"

@@ -9,7 +9,7 @@ Quick start
 -----------
 sudo bower install --force-latest
 mv bower_components ./tasks/static/
-sudo pip install
+sudo pip install -r requirements.txt
 
 
 1. Add "tasks" to your INSTALLED_APPS setting like this::

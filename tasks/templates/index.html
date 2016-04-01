@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load backend_utils %}
 
 {% block content %}
+
+{% if user and not user.is_anonymous %}
+  <a>Hello, {{ user.get_full_name }}!</a>
+  {{ user.account.avatar }}
+  <a href="/logout">Logout</a>
+{% else %}
 <h1>Project template</h1>
 
 
@@ -10,16 +17,12 @@ The Project is a Powerful Multi-Concept Bootstrap Template. It has endless posib
 
 <h1>About author</h1>
 Fedor Kobzarenko, fedorvk@gmail.com
-
-{% if user and not user.is_anonymous %}
-  <a>Hello, {{ user.get_full_name }}!</a>
-  <br>
-  <a href="/logout">Logout</a>
-{% else %}
 <a href="{% url 'social:begin' 'facebook' %}?next=/tasks/{{ request.path }}"><img height=100 src="{% static 'images/sign-in-facebook.png' %}"></a>
 {% endif %}
 
 {% include 'javascripts.html' %}
+{% if user and not user.is_anonymous %}
 <div class="col-xs-12 ng-view"></div>
-
+{% endif %}
+    
 {% endblock content %}

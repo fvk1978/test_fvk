@@ -4,11 +4,12 @@
             <img data-drop="false" data-drag="true" 
                 jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true,multiple:true, onStart:'startCallback(user, $index)'}"
                 data-jqyoui-options="{revert: 'invalid'}" 
-                src="/static/images/{{ user.id }}.png" 
+                src="/static/images/avatars/{{ user.avatar }}"
                 alt="{{ user.username }}" 
+                ng-show="user.avatar"
                 style="width:48px;height:48px;">
             <a 
-            ng-show="task"
+            ng-show="task && user.avatar"
             href="javascript:void(0)"
             ng-click="vm.remove_user(task, user)">delete</a>
         </div>

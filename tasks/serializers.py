@@ -4,9 +4,15 @@ from .models import Task, Account
 
 class AccountSerializer(serializers.ModelSerializer):
     
+    avatar = serializers.SerializerMethodField()
+
+    def get_avatar(self, instance):
+        # returning avatar url if there is an avatar else blank string
+        return instance.avatar.url if instance.avatar else ''
+    
     class Meta:
         model = Account
-        fields = ('id', 'username')
+        fields = ('id', 'user', 'avatar')
 
         def update(self, instance, validated_data):
             

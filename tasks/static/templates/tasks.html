@@ -2,7 +2,7 @@
   <div ng-repeat="column in vm.columns" >
     <div class="container-fluid" dnd-list="column">
       <div 
-            ng-repeat="task in column track by $index"
+            ng-repeat="task in column track by task.id"
             dnd-draggable="task"
             dnd-moved="column.splice($index, 1); task_drop_callback(event, $index)"
             dnd-effect-allowed="move"

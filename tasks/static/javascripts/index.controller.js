@@ -38,7 +38,7 @@
             if(angular.equals(arr[i], obj)){
                 return i;
             }
-            if(arr.id == obj.id){
+            if(arr[i].id == obj.id){
                 return i;
             }
         };
@@ -90,7 +90,7 @@
             vm.tasks = data.data;
             console.log("vm.tasks updated", vm.tasks);
         }
-        $timeout(activate, 1000);
+//         $timeout(activate, 1000);
       }
 
 
