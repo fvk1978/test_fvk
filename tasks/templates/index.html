@@ -6,7 +6,6 @@
 
 {% if user and not user.is_anonymous %}
   <a>Hello, {{ user.get_full_name }}!</a>
-  {{ user.account.avatar }}
   <a href="/logout">Logout</a>
 {% else %}
 <h1>Project template</h1>
