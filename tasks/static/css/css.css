@@ -16,6 +16,21 @@ margin: 0 10px;
   display: inline-block;
 }
 
+input.wide {width:100%;}
+
+.task:nth-child(even) {
+    background: #E5E4E2;
+    border: groove;
+}
+.task:nth-child(odd) {
+    background: #FFF;
+    border: groove;
+}
+
+body {
+    background-color: #CCC;
+}
+
 /*.btn-add-new-task {
   position: fixed;
   bottom: 20px;

@@ -1,42 +1,45 @@
-<div class="row">
-  <div class="container-fluid" ng-controller="TasksController">
-    <div class="well">
-      <div class="task"
-        data-drop="true" data-drag="false" 
-        jqyoui-droppable="{placeholder:true,animate:true, multiple:true,stack:true, onDrop: 'dropCallback(task)', onOver: 'overCallback(task)'}"
-        ng-model="task"
-        >
-        <div class="task__meta">
-            <a href="#" editable-text="task.title" onbeforesave="partial_update(task, 'title', $data)">
-                {{ task.title }} 
-            </a>
-            , status: 
-            <a href="#" editable-select="task.status" e-ng-options="s.value as s.text for s in statuses" onbeforesave="partial_update(task, 'status', $data)">
-                {{ task.status }}
-            </a>        
-            , deadline: <a href="#" editable-bsdate="task.end_date" 
-                             e-is-open="opened.$data" e-ng-click="open($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy"
-                            onbeforesave="partial_update(task, 'end_date', $data)">{{ task.end_date|date:"dd/MM/yyyy" }}</a>
-            , priority: {{ task.index }}
+<div ng-controller="TasksController"
+    data-drop="true" data-drag="false" 
+    jqyoui-droppable="{placeholder:true,animate:true, multiple:true,stack:true, onDrop: 'dropCallback(task)', onOver: 'overCallback(task)'}"
+    ng-model="task"
+    >
+    <div class="row">
+        <div class="col-md-1">
+            <a 
+            href="javascript:void(0)"
+            ng-click="vm.destroy(task)">x</a>
         </div>
-
-        <div class="task__content">
+        
+        <div class="col-md-7">
             <a href="#" editable-textarea="task.summary" onbeforesave="partial_update(task, 'summary', $data)">
                 {{ task.summary }} 
             </a>
+            , priority: {{ task.index }}
         </div>
-        <div class="form-group">
+
+        <div class="col-md-2">
+            <a href="#" id="absolute"
+                    editable-bsdate="task.end_date" 
+                    e-is-open="opened.$data" 
+                    e-ng-click="open($event,'$data')" 
+                    e-datepicker-popup="dd-MMMM-yyyy"
+                    onbeforesave="partial_update(task, 'end_date', $data)">
+                    {{ (task.end_date|date:"dd/MM/yyyy") || 'empty' }}
+            </a>
+        </div>
+        
+        <div class="col-md-2">
+            <a href="#" editable-select="task.status" e-ng-options="s.value as s.text for s in statuses" onbeforesave="partial_update(task, 'status', $data)">
+                {{ task.status }}
+            </a>        
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-10">
             <users users="task.team" task="task" ng-show="task.team && task.team.length"></users>
         </div>
-        <div class="form-group">{{task.id}}
-            <a 
-            href="javascript:void(0)"
-            ng-click="vm.update(task)">edit</a>
-            <a 
-            href="javascript:void(0)"
-            ng-click="vm.destroy(task)">delete</a>
-        </div>
-      </div>
     </div>
-  </div>
 </div>

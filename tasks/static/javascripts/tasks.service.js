@@ -19,6 +19,7 @@
     var Tasks = {
       all: all,
       create: create,
+      create_task: create_task,
       get: get,
       update: update,
       partial_update: partial_update,
@@ -55,6 +56,20 @@
         title: title,
         summary: summary,
         end_date: end_date,
+      });
+    }
+
+    /**
+    * @name create_task
+    * @desc Create a new Task
+    * @param {string} The content of the new Task
+    * @returns {Promise}
+    * @memberOf test_fvk.tasks.services.Tasks
+    */
+    function create_task(title) {
+      return $http.post('/tasks/api/v1/tasks/', {
+        title: title,
+        summary: title,
       });
     }
 

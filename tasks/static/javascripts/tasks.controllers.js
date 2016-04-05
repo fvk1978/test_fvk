@@ -9,16 +9,17 @@
     .module('test_fvk.tasks.controllers')
     .controller('TasksController', TasksController);
 
-  TasksController.$inject = ['$location', '$rootScope', '$scope', 'Snackbar', 'Tasks', 'ngDialog'];
+  TasksController.$inject = ['$location', '$timeout', '$rootScope', '$scope', 'Snackbar', 'Tasks', 'ngDialog'];
 
   /**
   * @namespace TasksController
   */
-  function TasksController($location, $rootScope, $scope, Snackbar, Tasks, ngDialog) {
+  function TasksController($location, $timeout, $rootScope, $scope, Snackbar, Tasks, ngDialog) {
     var vm = this;
 
     vm.destroy = destroy;
     vm.update = update;
+    vm.create_task = create_task;
     $scope.partial_update = partial_update;
     vm.tasks_dnd = {
                                     selected: null,
@@ -34,9 +35,13 @@
         $event.preventDefault();
         $event.stopPropagation();
 
+        console.log($scope.opened);
         $scope.opened[elementOpened] = !$scope.opened[elementOpened];
     };
 
+    $scope.sortType = 'index'; // set the default sort type
+    $scope.sortReverse = false;  // set the default sort order
+    
     vm.remove_user = remove_user;
     
     vm.columns = [];
@@ -56,11 +61,10 @@
         $scope.task_drop_callback = function(event, index) {
             // Changed tasks' order, let's change tasks' indexes
             var index = 0;
-            for (var i = 0; i < vm.columns.length; ++i) {
-                for (var j = 0; j < vm.columns[i].length; ++j) {
-                    index++;
-                    partial_update(vm.columns[i][j], 'index', index);
-                }
+                console.log(vm.tasks);
+            for (var i = 0; i < vm.tasks.length; ++i) {
+                index++;
+                partial_update(vm.tasks[i], 'index', index);
             }
         };
         
@@ -70,8 +74,8 @@
     * @memberOf test_fvk.tasks.controllers.TasksController
     */
     function activate() {
-      $scope.$watchCollection(function () { return $scope.tasks; }, render);
-      $scope.$watch(function () { return $(window).width(); }, render);
+      $scope.$watchCollection(function () { return $scope.tasks; }, render1);
+      $scope.$watch(function () { return $(window).width(); }, render1);
     }
 
 
@@ -158,6 +162,12 @@
       }
     }
     
+    function render1(current, original) {
+      if (current && current.length && current !== original) {
+        vm.tasks = current;
+      }
+    }
+    
         /**
      * @name destroy
      * @desc Destroy this task
@@ -207,6 +217,35 @@
   
     }
     
+        /**
+     * @name create_task
+     * @desc Create task
+     * @memberOf test_fvk.controllers.TaskController
+     */
+    function create_task() {
+      $rootScope.$broadcast('task.created', {
+        title: vm.title,
+      });        
+      Tasks.create_task(vm.title).then(taskSuccessFn, taskErrorFn);
+
+      /**
+       * @name taskSuccessFn
+       * @desc Redirect to index and display success snackbar
+       */
+      function taskSuccessFn(data, status, headers, config) {
+        Snackbar.show('Your task has been created.');
+      }
+
+
+      /**
+       * @name taskErrorFn
+       * @desc Display error snackbar
+       */
+      function taskErrorFn(data, status, headers, config) {
+        Snackbar.error(data.error);
+      }
+    }
+
         /**
      * @name partial_update
      * @desc Update some task's field task

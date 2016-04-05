@@ -19,22 +19,22 @@ FB.ui({
 }
 </script>
 
-<div ng-controller="TasksController">
+<div id="container" ng-controller="TasksController" ng-cloak>
     <users users="vm.users" ng-show="vm.users && vm.users.length"></users>
     <div>
         <button class="btn" id="send-invite">Send invite</button>
     </div>
 
-    <a class="btn btn-primary btn-fab btn-raised mdi-content-add btn-add-new-task"
+    <a class="btn"
         href="javascript:void(0)"
         ng-show="vm.tasks && vm.tasks.length"
         ng-dialog="/static/templates/create.html"
         ng-dialog-controller="AddTaskController as vm"></a>
         
-    <tasks tasks="vm.tasks" ng-show="vm.tasks && vm.tasks.length"></tasks>
+    <tasks tasks="vm.tasks"></tasks>
 </div>
 
-<a class="btn btn-primary btn-fab btn-raised mdi-content-add btn-add-new-task"
+<a class="btn"
    href="javascript:void(0)"
    ng-show="vm.isAuthenticated || 1"
    ng-dialog="/static/templates/create.html"

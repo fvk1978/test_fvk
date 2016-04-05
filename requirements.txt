@@ -13,3 +13,4 @@ six
 sqlparse
 static3
 wsgiref
+uwsgi
