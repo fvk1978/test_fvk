@@ -28,7 +28,7 @@ FB.ui({
     <a class="btn"
         href="javascript:void(0)"
         ng-show="vm.tasks && vm.tasks.length"
-        ng-dialog="/static/templates/create.html"
+        ng-dialog="/tasks/static/templates/create.html"
         ng-dialog-controller="AddTaskController as vm"></a>
         
     <tasks tasks="vm.tasks"></tasks>
@@ -37,6 +37,6 @@ FB.ui({
 <a class="btn"
    href="javascript:void(0)"
    ng-show="vm.isAuthenticated || 1"
-   ng-dialog="/static/templates/create.html"
+   ng-dialog="/tasks/static/templates/create.html"
    ng-dialog-controller="AddTaskController as vm"></a>
 

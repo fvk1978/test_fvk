@@ -1,4 +1,5 @@
 python-social-auth
+social-auth-app-django
 pillow
 dj-database-url
 dj-static
@@ -15,3 +16,4 @@ sqlparse
 static3
 wsgiref
 uwsgi
+pyjwkest

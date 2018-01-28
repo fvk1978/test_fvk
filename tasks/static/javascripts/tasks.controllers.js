@@ -47,6 +47,7 @@
     vm.columns = [];
 
     activate();
+                console.log(vm.tasks);
 
     
       $scope.startCallback = function(event, ui, user, index) {
@@ -207,7 +208,7 @@
 
         $scope.task = task;
         ngDialog.openConfirm({            
-            templateUrl: '/static/templates/edit_task.html',
+            templateUrl: '/tasks/static/templates/edit_task.html',
             scope: $scope           
         }).then(function(value){
             save(value);

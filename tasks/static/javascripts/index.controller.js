@@ -88,9 +88,9 @@
       function tasksSuccessFn(data, status, headers, config) {
         if (!(typeof vm.tasks !== "undefined" && vm.tasks.length > 0 && arraysEqual(vm.tasks, data.data))) {
             vm.tasks = data.data;
-            console.log("vm.tasks updated", vm.tasks);
+//             console.log("vm.tasks updated", vm.tasks);
         }
-        $timeout(activate, 1000);
+//         $timeout(activate, 1000);
       }
 
 
@@ -109,6 +109,7 @@
       */
       function usersSuccessFn(data, status, headers, config) {
         vm.users = data.data;
+//         console.log(vm.users);
       }
 
 

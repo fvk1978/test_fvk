@@ -40,7 +40,7 @@
 <div dnd-list="vm.tasks">
     <div 
         class="task"
-        ng-repeat="task in vm.tasks | orderObjectBy:sortType:sortReverse track by task.id"
+        ng-repeat="task in vm.tasks | orderObjectBy:sortType:sortReverse"
         dnd-draggable="task"
         dnd-moved="vm.tasks.splice($index, 1); task_drop_callback(event, $index)"
         dnd-effect-allowed="move"

@@ -32,7 +32,7 @@ class Task(models.Model):
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='tasks/static/images/avatars/', null=True, blank=True)
-    task = models.ManyToManyField(Task, related_name='team', null=True, blank=True)
+    task = models.ManyToManyField(Task, related_name='team', blank=True)
  
     def __unicode__(self):
         return self.user.username

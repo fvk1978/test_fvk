@@ -15,12 +15,12 @@
     $routeProvider.when('/tasks/create', {
       controller: 'AddTaskController', 
       controllerAs: 'vm',
-      templateUrl: '/static/templates/create.html'
+      templateUrl: '/tasks/static/templates/create.html'
     })
     .when('/tasks', {
   controller: 'IndexController',
   controllerAs: 'vm',
-  templateUrl: '/static/templates/index.html'
+  templateUrl: '/tasks/static/templates/index.html'
 })
     .otherwise('/');
   }

@@ -1,10 +1,10 @@
 <div id="images_hz" class="form-group" ng-controller="TasksController">
     <div class='contentWrapper ng-cloak'>
         <div ng-repeat="user in users" class='div_row'>
-            <img data-drop="false" data-drag="true" 
+        <img data-drop="false" data-drag="true" 
                 jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true,multiple:true, onStart:'startCallback(user, $index)'}"
                 data-jqyoui-options="{revert: 'invalid'}" 
-                src="/static/images/avatars/{{ user.avatar }}"
+                src="{{ user.avatar }}"
                 alt="{{ user.username }}" 
                 ng-show="user.avatar"
                 style="width:48px;height:48px;">

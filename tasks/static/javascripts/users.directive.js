@@ -28,7 +28,7 @@
         users: '=',
         task: '='
       },
-      templateUrl: '/static/templates/users.html'
+      templateUrl: 'tasks/static/templates/users.html'
     };
 
     return directive;

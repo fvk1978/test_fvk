@@ -25,7 +25,7 @@
       scope: {
         task: '='
       },
-      templateUrl: '/static/templates/task.html'
+      templateUrl: '/tasks/static/templates/task.html'
     };
 
     return directive;

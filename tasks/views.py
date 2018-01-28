@@ -14,10 +14,10 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout, login
 
-from social.backends.oauth import BaseOAuth1, BaseOAuth2
-from social.backends.google import GooglePlusAuth
-from social.backends.utils import load_backends
-from social.apps.django_app.utils import psa
+from social_core.backends.oauth import BaseOAuth1, BaseOAuth2
+from social_core.backends.google import GooglePlusAuth
+from social_core.backends.utils import load_backends
+from social_django.utils import psa
 
 from decorators import render_to
 
@@ -31,8 +31,13 @@ class AccountViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
     
     def list(self, request,*kwargs):
-        queryset=Account.objects.all()
+        queryset = Account.objects.all()
         serializer = self.get_serializer(queryset,many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = self.queryset.get(pk=pk)
+        serializer = self.serializer_class(queryset)
         return Response(serializer.data)
 
     def create(self, request):
@@ -51,12 +56,17 @@ class AccountViewSet(viewsets.ModelViewSet):
     
 class TaskViewSet(viewsets.ModelViewSet):
     #lookup_field = 'title'
-    #queryset = Task.objects.all().order_by('index')
+    queryset = Task.objects.all().order_by('index')
     serializer_class = TaskSerializer
     
     def get_queryset(self):
         return Task.objects.filter(team__id=self.request.user.id).order_by('index')
     
+    def retrieve(self, request, pk=None):
+        queryset = self.queryset.get(pk=pk)
+        serializer = self.serializer_class(queryset)
+        return Response(serializer.data)
+
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
 
@@ -153,8 +163,11 @@ class IndexView(TemplateView):
     
 def logout(request):
     """Logs out user"""
-    auth_logout(request)
-    return redirect('/')
+    print "XXX"
+    a = auth_logout(request)
+    print a
+    print "XXX"
+    return redirect('/tasks/')
 
 
 @render_to('index.html')
