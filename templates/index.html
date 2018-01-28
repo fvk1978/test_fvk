@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load backend_utils %}
+
+{% block content %}
+
+{% if user and not user.is_anonymous %}
+  <a>Hello, {{ user.get_full_name }}!</a>
+  <a href="/tasks/logout/?next={{ request.path }}">Logout</a>
+<!--<form id="myform" method="post" action="{% url 'social:disconnect' 'facebook' %}?next={{request.path }}">
+    {% csrf_token %}
+    <input type="hidden" name="name" value="value" /> 
+    <a onclick="document.getElementById('myform').submit();">disconnect</a>
+</form>  -->
+{% else %}
+<h1>Project template</h1>
+
+
+
+The Project is a Powerful Multi-Concept Bootstrap Template. It has endless posibilities and It is perfectly suitable for Business, Portfolio, Personal, Agency, Corporate, Clinic/Hospital, Restaurant, Wedding, Landing, Shop, Blog.
+
+<h1>About author</h1>
+Fedor Kobzarenko, fedorvk@gmail.com
+<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"><img height=100 src="{% static 'images/sign-in-facebook.png' %}"></a>
+{% endif %}
+
+{% include 'javascripts.html' %}
+{% if user and not user.is_anonymous %}
+<div class="col-xs-12 ng-view"></div>
+{% endif %}
+    
+{% endblock content %}
